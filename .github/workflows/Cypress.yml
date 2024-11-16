@@ -2,11 +2,9 @@ name: Cypress Tests
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
   pull_request:
-    branches:
-      - master
+    branches: [ master ]
 
 jobs:
   build:
@@ -16,17 +14,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js 18.18.0
+      - name: Set up Latest Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18.18.0
+          node-version: latest # Menggunakan Node.js versi terbaru
 
       - name: Install Dependencies
         run: npm install
 
   test:
     name: Test WEB
-    needs: build # Job `test` hanya berjalan setelah job `build` selesai
+    needs: build # Job `test` bergantung pada job `build`
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
