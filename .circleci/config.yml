@@ -1,10 +1,22 @@
 version: 2.1
 
+version: 2.1
+
 orbs:
   cypress: cypress-io/cypress@2
+
+jobs:
+  install_dependencies:
+    docker:
+      - image: circleci/node:18.18.0
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
 
 workflows:
   build:
     jobs:
-      - npm ci
+      - install_dependencies
       - cypress/run
