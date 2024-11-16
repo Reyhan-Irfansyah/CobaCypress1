@@ -1,0 +1,43 @@
+name: Cypress CI
+
+on:
+  push:
+    branches:
+      - master # Jalankan workflow pada push ke branch `master`
+  pull_request:
+    branches:
+      - master # Jalankan workflow pada setiap pull request ke branch `master`
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.18.0 # Gunakan versi Node.js 18.18.0 sesuai kebutuhan Anda
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Cypress Tests
+        run: npx cypress run
+        env:
+          # Gunakan base URL website Anda
+          CYPRESS_BASE_URL: 'http://www.automationpractice.pl/index.php'
+
+      - name: Upload Cypress Videos
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-videos
+          path: cypress/videos
+
+      - name: Upload Cypress Screenshots
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
