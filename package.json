@@ -1,0 +1,17 @@
+{
+  "name": "cypress",
+  "version": "1.0.0",
+  "description": "coba automation testing with cypress",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress open"
+  },
+  "author": "reyhan",
+  "license": "ISC",
+  "dependencies": {
+    "cypress": "^13.15.2"
+  },
+  "devDependencies": {
+    "cypress-xpath": "^2.0.1"
+  }
+}
