@@ -3,48 +3,49 @@ name: Cypress CI
 on:
   push:
     branches:
-      - master # Jalankan workflow pada push ke branch `master`
+      - master
   pull_request:
     branches:
-      - master # Jalankan workflow pada setiap pull request ke branch `master`
+      - master
 
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18.18.0 # Gunakan Node.js versi 18.18.0
+          node-version: 18.18.0
 
-      # Install dependencies
+      - name: Cache Cypress Binary
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cypress-
+
       - name: Install Dependencies
         run: npm install
 
-      # Fix Cypress Permissions
-      - name: Fix Cypress Permissions
-        run: chmod +x ./node_modules/.bin/cypress
+      - name: Install Cypress Binary
+        run: npx cypress install
 
-      # Run Cypress Tests
       - name: Run Cypress Tests
         run: npx cypress run
         env:
           CYPRESS_BASE_URL: 'http://www.automationpractice.pl/index.php'
 
-      # Upload Cypress Videos
       - name: Upload Cypress Videos
         uses: actions/upload-artifact@v3
         with:
           name: cypress-videos
           path: cypress/videos
 
-      # Upload Cypress Screenshots
       - name: Upload Cypress Screenshots
         uses: actions/upload-artifact@v3
         with:
