@@ -3,20 +3,8 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@2
 
-jobs:
-  build:
-    docker:
-      - image: cypress/browsers:node16.16.0-chrome94-ff93
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: npm install
-      - run:
-          name: Run Cypress tests
-          command: npx cypress run
-
 workflows:
   build:
     jobs:
-      - build
+      - npm ci
+      - cypress/run
