@@ -13,29 +13,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18.18.0 # Gunakan versi Node.js 18.18.0 sesuai kebutuhan Anda
+          node-version: 18.18.0 # Gunakan Node.js versi 18.18.0
 
+      # Install dependencies
       - name: Install Dependencies
         run: npm install
 
+      # Fix Cypress Permissions
+      - name: Fix Cypress Permissions
+        run: chmod +x ./node_modules/.bin/cypress
+
+      # Run Cypress Tests
       - name: Run Cypress Tests
         run: npx cypress run
         env:
-          # Gunakan base URL website Anda
           CYPRESS_BASE_URL: 'http://www.automationpractice.pl/index.php'
 
+      # Upload Cypress Videos
       - name: Upload Cypress Videos
         uses: actions/upload-artifact@v3
         with:
           name: cypress-videos
           path: cypress/videos
 
+      # Upload Cypress Screenshots
       - name: Upload Cypress Screenshots
         uses: actions/upload-artifact@v3
         with:
