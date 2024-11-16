@@ -21,33 +21,13 @@ jobs:
         with:
           node-version: 18.18.0
 
-      - name: Cache Cypress Binary
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/Cypress
-          key: ${{ runner.os }}-cypress-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-cypress-
-
       - name: Install Dependencies
         run: npm install
 
       - name: Install Cypress Binary
-        run: npx cypress install
+        run: npm install cypress --save-dev
 
       - name: Run Cypress Tests
         run: npx cypress run
         env:
           CYPRESS_BASE_URL: 'http://www.automationpractice.pl/index.php'
-
-      - name: Upload Cypress Videos
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress-videos
-          path: cypress/videos
-
-      - name: Upload Cypress Screenshots
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
