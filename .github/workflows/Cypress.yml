@@ -1,18 +1,36 @@
 name: Cypress Tests
 
-on: push
+on:
+  push:
+    branches:
+      - master # Jalankan workflow pada push ke branch master
+  pull_request:
+    branches:
+      - master # Jalankan workflow pada setiap pull request ke branch master
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      # Install npm dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          build: npm run build
-          start: npm start
+    runs-on: ubuntu-latest
 
+    steps:
+      # Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Setup Node.js
+      - name: Set up Node.js 18.18.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.18.0 # Menggunakan Node.js versi 18.18.0
+
+      # Install Dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Install Cypress Binary
+      - name: Install Cypress Binary
+        run: npm install cypress --save-dev
+
+      # Run Cypress Tests
+      - name: Run Cypress Tests
+        run: npx cypress run
