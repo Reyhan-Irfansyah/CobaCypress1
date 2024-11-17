@@ -3,7 +3,7 @@ version: 2.1
 executors:
   cypress_executor:
     docker:
-      - image: cypress/base:10
+      - image: cypress/base:18.16.0  # Image dengan Node.js yang didukung
     working_directory: ~/project
 
 jobs:
@@ -12,7 +12,17 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Node.js Dependencies
+          name: Install Node.js (Ensure Correct Version)
+          command: |
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install 18
+            nvm use 18
+            node -v
+            npm -v
+      - run:
+          name: Install Dependencies
           command: npm install
 
   run_cypress_tests:
@@ -20,7 +30,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Node.js Dependencies
+          name: Install Dependencies
           command: npm install
       - run:
           name: Run Cypress Tests
