@@ -8,6 +8,10 @@ workflows:
       - cypress/run:
           pre-steps:
             - run:
+                name: Clean working directory
+                command: rm -rf ~/project/*
+            - checkout
+            - run:
                 name: Install dependencies with Yarn
                 command: yarn install
             - run:
