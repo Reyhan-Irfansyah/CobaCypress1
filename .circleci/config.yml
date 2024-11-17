@@ -1,18 +1,23 @@
 version: 2.1
 orbs:
   cypress: cypress-io/cypress@3
+jobs:
+  build:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/project/subdirectory-name
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Install Cypress
+          command: npm install cypress --save-dev
+      - run:
+          name: Run Cypress Tests
+          command: npx cypress run
 workflows:
   build:
     jobs:
-      - cypress/run:
-          pre-steps:
-            - run:
-                name: Install dependencies
-                command: npm install
-            - run:
-                name: Install Cypress
-                command: npm install cypress --save-dev
-          post-steps:
-            - run:
-                name: Run Cypress Tests
-                command: npx cypress run
+      - build
