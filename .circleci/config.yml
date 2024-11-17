@@ -4,5 +4,15 @@ orbs:
 workflows:
   build:
     jobs:
-      - cypress/run
-          start-command: 'npm install'
+      - cypress/run:
+          pre-steps:
+            - run:
+                name: Install dependencies
+                command: npm install
+            - run:
+                name: Install Cypress
+                command: npm install cypress --save-dev
+          post-steps:
+            - run:
+                name: Run Cypress Tests
+                command: npx cypress run
