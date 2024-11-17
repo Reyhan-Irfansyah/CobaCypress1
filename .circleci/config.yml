@@ -1,23 +1,43 @@
 version: 2.1
 orbs:
   cypress: cypress-io/cypress@3
+
 jobs:
   build:
     docker:
-      - image: circleci/node:latest
-    working_directory: ~/project/subdirectory-name
+      - image: cypress/browsers:node16.16.0-chrome103-ff102
+    working_directory: ~/project
     steps:
       - checkout
+
+      # Pastikan versi Node.js dan npm terinstall dengan benar
       - run:
-          name: Install dependencies
+          name: Check Node.js and npm version
+          command: |
+            node -v
+            npm -v
+
+      # Install dependencies
+      - run:
+          name: Install project dependencies
           command: npm install
+
+      # Install Cypress
       - run:
           name: Install Cypress
           command: npm install cypress --save-dev
+
+      # Fix Cypress file permissions
+      - run:
+          name: Set permissions for Cypress
+          command: chmod +x ./node_modules/.bin/cypress
+
+      # Run Cypress tests
       - run:
           name: Run Cypress Tests
           command: npx cypress run
+
 workflows:
-  build:
+  build-and-test:
     jobs:
       - build
