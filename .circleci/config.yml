@@ -1,36 +1,36 @@
 version: 2.1
-orbs:
-  node: circleci/node@5
+
+executors:
+  cypress_executor:
+    docker:
+      - image: cypress/base:10
+    working_directory: ~/project
+
 jobs:
-  test-node:
-    # Install node dependencies and run tests
-    executor: node/default
+  install_dependencies:
+    executor: cypress_executor
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: yarn
       - run:
-          name: Run tests
-          command: yarn test --passWithNoTests
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
-    docker:
-      - image: cimg/base:stable
+          name: Install Node.js Dependencies
+          command: npm install
+
+  run_cypress_tests:
+    executor: cypress_executor
     steps:
-      # Replace this with steps to deploy to users
+      - checkout
       - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          name: Install Node.js Dependencies
+          command: npm install
       - run:
-          name: found github actions config
-          command: ':'
-      - run:
-          name: found jenkins config
-          command: ':'
+          name: Run Cypress Tests
+          command: npx cypress run
+
 workflows:
-  build-and-test:
+  version: 2
+  test:
     jobs:
-      - test-node
-    # - deploy:
-    #     requires:
-    #       - test-node
+      - install_dependencies
+      - run_cypress_tests:
+          requires:
+            - install_dependencies
