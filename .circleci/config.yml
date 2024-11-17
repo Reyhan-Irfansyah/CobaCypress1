@@ -5,34 +5,24 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cypress/browsers:node16.16.0-chrome103-ff102
+      - image: cypress/browsers:node16.13.0-chrome91-ff89
     working_directory: ~/project
     steps:
       - checkout
-
-      # Pastikan versi Node.js dan npm terinstall dengan benar
       - run:
           name: Check Node.js and npm version
           command: |
             node -v
             npm -v
-
-      # Install dependencies
       - run:
-          name: Install project dependencies
+          name: Install dependencies
           command: npm install
-
-      # Install Cypress
       - run:
           name: Install Cypress
           command: npm install cypress --save-dev
-
-      # Fix Cypress file permissions
       - run:
           name: Set permissions for Cypress
           command: chmod +x ./node_modules/.bin/cypress
-
-      # Run Cypress tests
       - run:
           name: Run Cypress Tests
           command: npx cypress run
