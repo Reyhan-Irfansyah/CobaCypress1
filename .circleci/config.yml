@@ -2,32 +2,18 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@3
 
-jobs:
-  build:
-    docker:
-      - image: cypress/browsers:node16.13.0-chrome91-ff89
-    working_directory: ~/project
-    steps:
-      - checkout
-      - run:
-          name: Check Node.js and npm version
-          command: |
-            node -v
-            npm -v
-      - run:
-          name: Install dependencies
-          command: npm install
-      - run:
-          name: Install Cypress
-          command: npm install cypress --save-dev
-      - run:
-          name: Set permissions for Cypress
-          command: chmod +x ./node_modules/.bin/cypress
-      - run:
-          name: Run Cypress Tests
-          command: npx cypress run
-
 workflows:
-  build-and-test:
+  build:
     jobs:
-      - build
+      - cypress/run:
+          pre-steps:
+            - run:
+                name: Install dependencies with Yarn
+                command: yarn install
+            - run:
+                name: Install Cypress with Yarn
+                command: yarn add cypress --dev
+          post-steps:
+            - run:
+                name: Run Cypress Tests
+                command: npx cypress run
