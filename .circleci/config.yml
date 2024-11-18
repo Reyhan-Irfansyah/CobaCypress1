@@ -20,4 +20,4 @@ workflows:
           post-steps:
             - run:
                 name: Run Cypress Tests
-                command: npx cypress run --headed
+                command: npx cypress run
