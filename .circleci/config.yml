@@ -7,8 +7,6 @@ workflows:
     jobs:
       - cypress/run:
           install-browsers: true
-          start-command: 'npm run start'
-          cypress-command: 'npx cypress run --browser chrome'
           pre-steps:
             - run:
                 name: Clean working directory
@@ -23,4 +21,5 @@ workflows:
           post-steps:
             - run:
                 name: Run Cypress Tests
-                command: npx cypress run
+                start-command: 'npm run start'
+                cypress-command: 'npx cypress run --browser chrome'
