@@ -6,6 +6,9 @@ workflows:
   build:
     jobs:
       - cypress/run:
+          install-browsers: true
+          start-command: 'npm run start'
+          cypress-command: 'npx cypress run --browser chrome'
           pre-steps:
             - run:
                 name: Clean working directory
@@ -18,7 +21,6 @@ workflows:
                 name: Install Cypress with Yarn
                 command: yarn add cypress --dev
           post-steps:
-            - cypress/run:
-                install-browsers: true
-                start-command: 'npm run start'
-                cypress-command: 'npx cypress run --browser chrome'
+            - run:
+                name: Run Cypress Tests
+                command: npx cypress run
