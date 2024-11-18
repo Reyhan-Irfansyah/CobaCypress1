@@ -18,9 +18,7 @@ workflows:
                 name: Install Cypress with Yarn
                 command: yarn add cypress --dev
           post-steps:
-            - run:
-                name: Open cypress
-                command: npx cypress open
-            - run:
-                name: Run Cypress Tests
-                command: npx cypress run
+            - cypress/run:
+                install-browsers: true
+                start-command: 'npm run start'
+                cypress-command: 'npx cypress run --browser chrome'
