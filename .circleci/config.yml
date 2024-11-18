@@ -19,5 +19,8 @@ workflows:
                 command: yarn add cypress --dev
           post-steps:
             - run:
+                name: Open cypress
+                command: npx cypress open
+            - run:
                 name: Run Cypress Tests
                 command: npx cypress run
